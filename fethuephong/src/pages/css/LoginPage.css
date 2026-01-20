@@ -1,0 +1,88 @@
+* {
+  box-sizing: border-box;
+}
+
+.login-page {
+  width: 100vw;
+  height: 100vh;
+  background: #f9fafb;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.login-box {
+  width: 360px;
+  padding: 32px;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+}
+
+.login-title {
+  text-align: center;
+  font-size: 20px;
+  margin-bottom: 20px;
+  color: #000;
+}
+
+.login-field {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 14px;
+}
+
+.login-field label {
+  font-size: 14px;
+  margin-bottom: 6px;
+  color: #000;
+}
+
+/* INPUT: VIỀN ĐEN – CHỮ ĐEN */
+.login-field input {
+  padding: 10px;
+  border: 1px solid #000;
+  border-radius: 4px;
+  font-size: 14px;
+  background: #fff;
+  color: #000;
+}
+
+.login-field input:focus {
+  outline: none;
+  border-color: #000;
+}
+
+.login-btn {
+  width: 100%;
+  padding: 10px;
+  margin-top: 10px;
+  background: #000;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.login-btn:hover {
+  opacity: 0.9;
+}
+
+.login-error {
+  color: red;
+  font-size: 14px;
+  margin-bottom: 12px;
+}
+
+.login-register {
+  margin-top: 16px;
+  text-align: center;
+  font-size: 14px;
+  color: #000;
+}
+
+.login-register span {
+  cursor: pointer;
+  font-weight: 500;
+  text-decoration: underline;
+}
