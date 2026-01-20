@@ -57,4 +57,11 @@ class RoomService
             ];
         });
     }
+
+    public function getAll(int $perPage = 12){
+        return Room::query()
+            ->where('status', '!=', 'processing')
+            ->orderByDesc('price')
+            ->paginate($perPage);
+    }
 }

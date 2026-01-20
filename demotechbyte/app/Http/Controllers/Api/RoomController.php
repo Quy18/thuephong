@@ -70,4 +70,9 @@ class RoomController extends Controller
         // json
         return response()->json($this->roomService->create($data));
     }
+
+    public function getAllRoom(Request $request){
+        $perPage = $request->get('per_page', 12);
+        return response()->json($this->roomService->getAll($perPage));
+    }
 }

@@ -1,154 +1,72 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import RoomCard from "./RoomCard";
+import { fetchRooms } from "../api/room";
 import "./css/HomeBody.css";
 
-const ROOMS = [
-  {
-    id: 1,
-    image: "https://picsum.photos/400/300?random=1",
-    price: "3.500.000",
-    address: "Quận Bình Thạnh, TP.HCM",
-    status: "available",
-  },
-  {
-    id: 2,
-    image: "https://picsum.photos/400/300?random=2",
-    price: "4.200.000",
-    address: "Quận Gò Vấp, TP.HCM",
-    status: "rented",
-  },
-  {
-    id: 3,
-    image: "https://picsum.photos/400/300?random=3",
-    price: "2.800.000",
-    address: "Quận Tân Bình, TP.HCM",
-    status: "available",
-  },
-  {
-    id: 4,
-    image: "https://picsum.photos/400/300?random=4",
-    price: "5.000.000",
-    address: "Quận 1, TP.HCM",
-    status: "rented",
-  },
-  {
-    id: 5,
-    image: "https://picsum.photos/400/300?random=5",
-    price: "3.200.000",
-    address: "Quận Thủ Đức, TP.HCM",
-    status: "available",
-  },
-  {
-    id: 6,
-    image: "https://picsum.photos/400/300?random=6",
-    price: "4.800.000",
-    address: "Quận 7, TP.HCM",
-    status: "rented",
-  },
-  {
-    id: 7,
-    image: "https://picsum.photos/400/300?random=7",
-    price: "2.600.000",
-    address: "Quận 12, TP.HCM",
-    status: "available",
-  },
-  {
-    id: 8,
-    image: "https://picsum.photos/400/300?random=8",
-    price: "3.900.000",
-    address: "Quận Phú Nhuận, TP.HCM",
-    status: "rented",
-  },
-  {
-    id: 9,
-    image: "https://picsum.photos/400/300?random=9",
-    price: "6.100.000",
-    address: "Quận 3, TP.HCM",
-    status: "available",
-  },
-  {
-    id: 10,
-    image: "https://picsum.photos/400/300?random=9",
-    price: "6.100.000",
-    address: "Quận 3, TP.HCM",
-    status: "available",
-  },
-  {
-    id: 11,
-    image: "https://picsum.photos/400/300?random=9",
-    price: "6.100.000",
-    address: "Quận 3, TP.HCM",
-    status: "available",
-  },
-  {
-    id: 12,
-    image: "https://picsum.photos/400/300?random=9",
-    price: "6.100.000",
-    address: "Quận 3, TP.HCM",
-    status: "available",
-  },
-  {
-    id: 13,
-    image: "https://picsum.photos/400/300?random=9",
-    price: "6.100.000",
-    address: "Quận 3, TP.HCM",
-    status: "available",
-  },
-  {
-    id: 14,
-    image: "https://picsum.photos/400/300?random=9",
-    price: "6.100.000",
-    address: "Quận 3, TP.HCM",
-    status: "available",
-  },
-  {
-    id: 15,
-    image: "https://picsum.photos/400/300?random=9",
-    price: "6.100.000",
-    address: "Quận 3, TP.HCM",
-    status: "available",
-  },
-  {
-    id: 16,
-    image: "https://picsum.photos/400/300?random=9",
-    price: "6.100.000",
-    address: "Quận 3, TP.HCM",
-    status: "available",
-  },
-  {
-    id: 17,
-    image: "https://picsum.photos/400/300?random=9",
-    price: "6.100.000",
-    address: "Quận 3, TP.HCM",
-    status: "available",
-  },
-];
-
-const PAGE_SIZE = 12; // 6 phòng / trang (2 hàng)
-
 function HomeBody() {
+  const [rooms, setRooms] = useState([]);
   const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
-  const totalPages = Math.ceil(ROOMS.length / PAGE_SIZE);
-  const startIndex = (page - 1) * PAGE_SIZE;
-  const currentRooms = ROOMS.slice(startIndex, startIndex + PAGE_SIZE);
+  useEffect(() => {
+    loadRooms(page);
+  }, [page]);
+
+  const loadRooms = async (page) => {
+    try {
+      setLoading(true);
+      setError(null);
+
+      const data = await fetchRooms({
+        page,
+      });
+
+      setRooms(data.data);
+      setTotalPages(data.last_page);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handlePrev = () => {
+    if (page > 1) setPage((prev) => prev - 1);
+  };
+
+  const handleNext = () => {
+    if (page < totalPages) setPage((prev) => prev + 1);
+  };
 
   return (
     <div className="home-body">
       <h2 className="home-title">Phòng đang cho thuê</h2>
 
+      {loading && <p>Đang tải dữ liệu...</p>}
+      {error && <p className="error">{error}</p>}
+
       <div className="room-grid">
-        {currentRooms.map((room) => (
-          <RoomCard key={room.id} room={room} />
+        {rooms.map((room) => (
+          <RoomCard
+            key={room.id}
+            room={{
+              id: room.id,
+              title: room.title,
+              contract_term: room.contract_term,
+              image: `https://picsum.photos/400/300?random=${room.id}`,
+              price: room.price.toLocaleString("vi-VN"),
+              address: `${room.district}, ${room.city}`,
+              status: room.status,
+            }}
+          />
         ))}
       </div>
 
       {/* PAGINATION */}
       <div className="pagination">
-        <button
-          disabled={page === 1}
-          onClick={() => setPage(page - 1)}
-        >
+        <button disabled={page === 1} onClick={handlePrev}>
           ◀ Trước
         </button>
 
@@ -156,10 +74,7 @@ function HomeBody() {
           Trang {page} / {totalPages}
         </span>
 
-        <button
-          disabled={page === totalPages}
-          onClick={() => setPage(page + 1)}
-        >
+        <button disabled={page === totalPages} onClick={handleNext}>
           Sau ▶
         </button>
       </div>

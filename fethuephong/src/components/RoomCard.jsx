@@ -22,9 +22,19 @@ function RoomCard({ room }) {
         </span>
       </div>
 
-      <div className="room-info">
+      {/* <div className="room-info">
+        <p className="room-title">{room.title}</p>
         <p className="room-price">{room.price} đ / tháng</p>
         <p className="room-address">{room.address}</p>
+        <p className="room-contract-term">{room.contract_term}</p>
+      </div> */}
+      <div className="room-info">
+        <p className="room-title">{room.title}</p>
+        <p className="room-price">{room.price} đ / tháng</p>
+        <p className="room-address">{room.address}</p>
+        <p className="room-contract-term">
+          ⏳ Hợp đồng: {room.contract_term}
+        </p>
       </div>
     </div>
   );
