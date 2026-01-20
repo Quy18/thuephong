@@ -3,6 +3,7 @@ import LoginPage from "../pages/LoginPage";
 import RegisterPage from "../pages/RegisterPage";
 import HomePage from "../pages/HomePage";
 import ProtectedRoute from "./ProtectedRoute";
+import Chatbot from "../components/Chatbot";
 
 export default function AppRoutes() {
   return (
@@ -20,6 +21,7 @@ export default function AppRoutes() {
         element={
           <ProtectedRoute>
             <HomePage />
+            <Chatbot />
           </ProtectedRoute>
         }
       />

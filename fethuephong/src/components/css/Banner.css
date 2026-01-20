@@ -1,0 +1,42 @@
+.banner {
+  position: relative;
+  margin-top: 64px; /* tránh bị header che */
+  height: 300px;
+  overflow: hidden;
+}
+
+.banner-slide {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  opacity: 0;
+  transition: opacity 1s ease-in-out;
+}
+
+.banner-slide.active {
+  opacity: 1;
+}
+
+.banner-overlay {
+  position: relative;
+  z-index: 2;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.45);
+  color: #fff;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-left: 64px;
+}
+
+.banner-overlay h1 {
+  font-size: 36px;
+  margin-bottom: 8px;
+}
+
+.banner-overlay p {
+  font-size: 18px;
+  opacity: 0.9;
+}

@@ -1,0 +1,47 @@
+.home-body {
+  padding: 24px 32px;
+  background-color: #f6f7fb;
+  min-height: calc(100vh - 60px);
+  box-sizing: border-box;
+}
+
+.home-title {
+  font-size: 22px;
+  font-weight: 600;
+  margin-bottom: 20px;
+  color: #222;
+}
+
+.room-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+.pagination {
+  margin-top: 36px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 18px;
+}
+
+.pagination span {
+  font-size: 14px;
+  color: #444;
+}
+
+.pagination button {
+  border: none;
+  padding: 8px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  background-color: #1976d2;
+  color: #fff;
+  font-size: 14px;
+}
+
+.pagination button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}

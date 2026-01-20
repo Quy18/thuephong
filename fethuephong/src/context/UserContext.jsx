@@ -1,9 +1,10 @@
-import { createContext, useContext, useReducer } from "react";
+import { createContext, useContext, useEffect, useReducer } from "react";
 
 const UserContext = createContext();
 
 const initialState = {
   user: null,
+  isLoading: true, // 👈 QUAN TRỌNG
 };
 
 function userReducer(state, action) {
@@ -12,12 +13,22 @@ function userReducer(state, action) {
       return {
         ...state,
         user: action.payload,
+        isLoading: false,
       };
+
     case "LOGOUT":
       return {
         ...state,
         user: null,
+        isLoading: false,
       };
+
+    case "FINISH_LOADING":
+      return {
+        ...state,
+        isLoading: false,
+      };
+
     default:
       return state;
   }
@@ -25,6 +36,19 @@ function userReducer(state, action) {
 
 export function UserProvider({ children }) {
   const [state, dispatch] = useReducer(userReducer, initialState);
+
+  useEffect(() => {
+    const storedUser = localStorage.getItem("user");
+
+    if (storedUser) {
+      dispatch({
+        type: "SET_USER",
+        payload: JSON.parse(storedUser),
+      });
+    } else {
+      dispatch({ type: "FINISH_LOADING" });
+    }
+  }, []);
 
   return (
     <UserContext.Provider value={{ state, dispatch }}>

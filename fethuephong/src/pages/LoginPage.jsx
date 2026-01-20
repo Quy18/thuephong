@@ -34,6 +34,9 @@ function LoginPage() {
       // 1️⃣ lưu token
       localStorage.setItem("token", data.token);
 
+      // lưu user
+      localStorage.setItem("user", JSON.stringify(data.user));
+
       // 2️⃣ lưu user vào global state
       dispatch({
         type: "SET_USER",

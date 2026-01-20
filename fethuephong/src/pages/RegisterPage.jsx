@@ -31,7 +31,6 @@ function RegisterPage() {
     e.preventDefault();
     setLoading(true);
     setError(null);
-
     try {
       const data = await registerApi(form);
 
