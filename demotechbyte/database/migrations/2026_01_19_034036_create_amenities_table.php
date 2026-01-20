@@ -13,7 +13,18 @@ return new class extends Migration
     {
         Schema::create('amenities', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->foreignId('room_id')
+                ->constrained()
+                ->cascadeOnDelete();
+
+            $table->foreignId('amenity_type_id')
+                ->constrained('amenity_types')
+                ->cascadeOnDelete();
+
+            $table->string('custom_name')->nullable();
+
+            // 1 phòng không thể có 2 tiện nghi cùng loại
+            $table->unique(['room_id', 'amenity_type_id']);
         });
     }
 

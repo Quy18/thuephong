@@ -20,6 +20,12 @@ return new class extends Migration
             $table->string('title');
             $table->text('description')->nullable();
             $table->integer('price');
+            $table->integer('service_prive');
+            $table->integer('electricity_price');
+            $table->integer('water_price');
+            $table->string('contract_term');
+            // giờ giấc tự do hoặc chung chủ
+            $table->enum('type', ['free', 'common owner'])->default('free');
             $table->float('area');
             $table->string('address');
             $table->string('ward')->nullable();
