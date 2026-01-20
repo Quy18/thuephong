@@ -20,19 +20,19 @@ return new class extends Migration
             $table->string('title');
             $table->text('description')->nullable();
             $table->integer('price');
-            $table->integer('service_prive');
+            $table->integer('service_price');
             $table->integer('electricity_price');
             $table->integer('water_price');
             $table->string('contract_term');
             // giờ giấc tự do hoặc chung chủ
-            $table->enum('type', ['free', 'common owner'])->default('free');
+            $table->enum('type', ['free', 'common_owner'])->default('free');
             $table->float('area');
             $table->string('address');
             $table->string('ward')->nullable();
             $table->string('district');
             $table->string('city');
 
-            $table->enum('status', ['processing', 'available', 'rented'])->default('available');
+            $table->enum('status', ['processing', 'available', 'rented'])->default('processing');
 
             $table->timestamps();
         });

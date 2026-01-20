@@ -15,7 +15,6 @@ return new class extends Migration
             $table->id();
             $table->string('code')->unique();          // air_conditioner
             $table->string('default_name');            // Điều hòa
-            $table->timestamps();
         });
     }
 

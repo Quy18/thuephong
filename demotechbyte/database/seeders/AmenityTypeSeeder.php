@@ -71,6 +71,14 @@ class AmenityTypeSeeder extends Seeder
                 'code' => 'fireproof',
                 'default_name' => 'Chống cháy',
             ],
+            [
+                'code' => 'fan',
+                'default_name' => 'Quạt',
+            ],
+            [
+                'code' => 'other',
+                'default_name' => 'Other',
+            ],
         ]);
     }
 }

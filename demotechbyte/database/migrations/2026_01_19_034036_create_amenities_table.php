@@ -22,7 +22,8 @@ return new class extends Migration
                 ->cascadeOnDelete();
 
             $table->string('custom_name')->nullable();
-
+            $table->integer('quantity')->default(1);
+            $table->timestamps();
             // 1 phòng không thể có 2 tiện nghi cùng loại
             $table->unique(['room_id', 'amenity_type_id']);
         });
