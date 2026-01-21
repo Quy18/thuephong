@@ -1,20 +1,39 @@
+import {apiFetch} from './api';
 const API_BASE_URL = "http://localhost:8000/api/room";
 
-export async function fetchRooms({ page = 1 }) {
+export async function fetchRooms(params = {}) {
+  const {
+    page = 1,
+    status = "",
+    city = "",
+    district = "",
+    priceMin = "",
+    priceMax = "",
+    type = "",
+    contract_term = "",
+  } = params;
 
-  const response = await fetch(
-    `${API_BASE_URL}/get_all_room?page=${page}`,
-    {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-        "Content-Type": "application/json",
-      },
-    }
+  const query = new URLSearchParams({
+    page,
+    ...(status && { status }),
+    ...(city && { city }),
+    ...(district && { district }),
+    ...(priceMin && { priceMin }),
+    ...(priceMax && { priceMax }),
+    ...(type && { type }),
+    ...(contract_term && { contract_term }),
+  }).toString();
+
+  const response = await apiFetch(
+    `${API_BASE_URL}/get_all_room?${query}`
   );
 
   if (!response.ok) {
-    throw new Error("Unauthorized");
+    if (response.status === 401) {
+      throw new Error("Unauthorized");
+    }
+    throw new Error("Fetch rooms failed");
   }
-
   return response.json();
 }
+

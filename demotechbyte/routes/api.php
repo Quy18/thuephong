@@ -26,6 +26,6 @@ Route::middleware('jwt.auth')->group(function () {
         Route::middleware(['owner'])->group(function () {
             Route::post('/create_room', [RoomController::class, 'createRoom']);
         });
-        Route::get('/get_all_room', [RoomController::class, 'getAllRoom']);
+        Route::get('/get_all_room', [RoomController::class, 'getAllRoomOrFilter']);
     });
 });

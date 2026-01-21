@@ -58,14 +58,61 @@ class RoomService
         });
     }
 
-    public function getAll(int $perPage = 12){
-        return Room::query()
-            ->with([
-                'owner:id,name,avatar'
-            ])
-            ->where('status', '!=', 'processing')
-            ->where('status', 'available')
-            ->orderBy('price')
-            ->paginate($perPage);
+    public function getAllOrFilter(array $filters){
+        $query = Room::query()->with('owner'); // lấy thông tin người cho thuê
+
+
+        // Status
+        if (!empty($filters['status'])) {
+            $query->where('status', $filters['status']);
+        } else {
+            $query->where('status', '!=', 'processing');
+        }
+
+        /* ===============================
+         | LOCATION
+         ===============================*/
+        if (!empty($filters['city'])) {
+            $query->where('city', 'like', $filters['city']);
+        }
+
+        if (!empty($filters['district'])) {
+            $query->where('district', 'like', $filters['district']);
+        }
+
+        /* ===============================
+         | PRICE (triệu)
+         ===============================*/
+        if (!empty($filters['priceMin'])) {
+            $query->where('price', '>=', $filters['priceMin'] * 1_000_000);
+        }
+
+        if (!empty($filters['priceMax'])) {
+            $query->where('price', '<=', $filters['priceMax'] * 1_000_000);
+        }
+
+        /* ===============================
+         | LIVING TYPE
+         ===============================*/
+        if (!empty($filters['type'])) {
+            $query->where('type', $filters['type']);
+        }
+
+        /* ===============================
+         | CONTRACT TERM
+         ===============================*/
+        if (!empty($filters['contract_term'])) {
+            $query->where('contract_term', $filters['contract_term'] . ' tháng');
+        }
+
+        /* ===============================
+         | SORT
+         ===============================*/
+        $query->orderBy('price');
+
+        /* ===============================
+         | PAGINATION
+         ===============================*/
+        return $query->paginate(12);
     }
 }

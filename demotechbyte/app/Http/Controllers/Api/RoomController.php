@@ -71,8 +71,30 @@ class RoomController extends Controller
         return response()->json($this->roomService->create($data));
     }
 
-    public function getAllRoom(Request $request){
-        $perPage = $request->get('per_page', 12);
-        return response()->json($this->roomService->getAll($perPage));
+    public function getAllRoomOrFilter(Request $request){
+        $data = $request->validate([
+            'status' => 'nullable|in:available,rented',
+            'city'   => 'nullable|string|max:255',
+            'district'   => 'nullable|string|max:255',
+            'priceMin'   => 'nullable|numeric|min:0',
+            'priceMax'   => 'nullable|numeric|min:0',
+            'type' => 'nullable|in:free,common_owner',
+            'contract_term'   => 'nullable|in:6,12',
+            'page'       => 'nullable|integer|min:1',
+        ]);
+
+        // Validate logic thêm
+        if (
+            isset($data['priceMin'], $data['priceMax']) &&
+            $data['priceMin'] > $data['priceMax']
+        ) {
+            return response()->json([
+                'message' => 'Giá từ không được lớn hơn giá đến'
+            ], 422);
+        }
+
+        $rooms = $this->roomService->getAllOrFilter($data);
+
+        return response()->json($rooms);
     }
 }
