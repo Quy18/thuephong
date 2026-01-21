@@ -2,23 +2,29 @@ import { useUser } from "../context/UserContext";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Header from "../components/Header";
+import { updateProfile } from "../api/user";
 import "./css/Profile.css";
 
-const DEFAULT_AVATAR =
-  "https://ui-avatars.com/api/?name=User&background=1976d2&color=fff";
+const DEFAULT_AVATAR = "https://ui-avatars.com/api/?name=User&background=1976d2&color=fff";
+const BASE_IMAGE_URL = "http://localhost:8000/storage/";
 
 function Profile() {
-  const { state } = useUser();
+  const { state, dispatch } = useUser();
   const user = state.user;
   const navigate = useNavigate();
 
   const [form, setForm] = useState({
     name: user?.name || "",
     phone: user?.phone || "",
-    avatar: user?.avatar || "",
+    password_old: "",
+    password_new: "",
+    password_new_confirmation: "",
+    avatar: null,
   });
 
   const [preview, setPreview] = useState(user?.avatar || "");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
   if (!user) return null;
 
@@ -27,7 +33,6 @@ function Profile() {
     setForm((prev) => ({ ...prev, [name]: value }));
   };
 
-  // ✅ chọn ảnh từ máy
   const handleAvatarChange = (e) => {
     const file = e.target.files[0];
     if (!file) return;
@@ -38,17 +43,38 @@ function Profile() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError("");
+    setLoading(true);
 
-    const formData = new FormData();
-    formData.append("name", form.name);
-    formData.append("phone", form.phone);
+    try {
+      const formData = new FormData();
+      formData.append("name", form.name);
+      formData.append("phone", form.phone);
 
-    if (form.avatar instanceof File) {
-      formData.append("avatar", form.avatar);
+      if (form.password_old) {
+        formData.append("password_old", form.password_old);
+        formData.append("password_new", form.password_new);
+        formData.append(
+          "password_new_confirmation",
+          form.password_new_confirmation
+        );
+      }
+
+      if (form.avatar) {
+        formData.append("avatar", form.avatar);
+      }
+
+      const updatedUser = await updateProfile(formData);
+
+      dispatch({ type: "UPDATE_USER", payload: updatedUser });
+
+      alert("✅ Cập nhật thông tin thành công");
+      navigate("/home");
+    } catch (err) {
+      setError(err.message || "Cập nhật thất bại");
+    } finally {
+      setLoading(false);
     }
-
-    console.log("FORM DATA READY");
-    alert("Demo: form đã sẵn sàng gửi API");
   };
 
   return (
@@ -57,18 +83,17 @@ function Profile() {
 
       <div className="profile-page">
         <div className="profile-card">
-          {/* BACK */}
           <button className="back-btn" onClick={() => navigate(-1)}>
             ← Quay lại
           </button>
 
-          {/* HEADER */}
           <div className="profile-header">
             <img
-              src={preview || DEFAULT_AVATAR}
+              src={BASE_IMAGE_URL + preview || DEFAULT_AVATAR}
               alt="avatar"
               className="profile-avatar"
             />
+            
 
             <div className="profile-basic">
               <h2>{user.name}</h2>
@@ -76,12 +101,12 @@ function Profile() {
             </div>
           </div>
 
-          {/* FORM */}
           <form className="profile-form" onSubmit={handleSubmit}>
+            {error && <p className="error">{error}</p>}
+
             <div className="form-group">
               <label>Họ và tên</label>
               <input
-                type="text"
                 name="name"
                 value={form.name}
                 onChange={handleChange}
@@ -90,27 +115,57 @@ function Profile() {
 
             <div className="form-group">
               <label>Email</label>
-              <input type="email" value={user.email} disabled />
+              <input value={user.email} disabled />
             </div>
 
             <div className="form-group">
               <label>Số điện thoại</label>
               <input
-                type="text"
                 name="phone"
                 value={form.phone}
                 onChange={handleChange}
               />
             </div>
 
-            {/* UPLOAD */}
+            <hr />
+
+            <div className="form-group">
+              <label>Mật khẩu cũ</label>
+              <input
+                type="password"
+                name="password_old"
+                value={form.password_old}
+                onChange={handleChange}
+              />
+            </div>
+
+            <div className="form-group">
+              <label>Mật khẩu mới</label>
+              <input
+                type="password"
+                name="password_new"
+                value={form.password_new}
+                onChange={handleChange}
+              />
+            </div>
+
+            <div className="form-group">
+              <label>Xác nhận mật khẩu mới</label>
+              <input
+                type="password"
+                name="password_new_confirmation"
+                value={form.password_new_confirmation}
+                onChange={handleChange}
+              />
+            </div>
+
             <div className="form-group">
               <label>Ảnh đại diện</label>
               <input type="file" accept="image/*" onChange={handleAvatarChange} />
             </div>
 
-            <button type="submit" className="save-btn">
-              💾 Lưu thay đổi
+            <button className="save-btn" disabled={loading}>
+              {loading ? "Đang lưu..." : "💾 Lưu thay đổi"}
             </button>
           </form>
         </div>

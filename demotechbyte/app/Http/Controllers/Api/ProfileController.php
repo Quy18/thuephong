@@ -31,10 +31,7 @@ class ProfileController extends Controller
         try {
             $user = $this->userService->update($data, $request->user());
 
-            return response()->json([
-                'message' => 'Cập nhật thông tin thành công',
-                'user' => $user,
-            ]);
+            return response()->json($user);
         } catch (\Exception $e) {
             throw ValidationException::withMessages([
                 'password_old' => [$e->getMessage()],

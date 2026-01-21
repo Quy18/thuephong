@@ -2,17 +2,15 @@ import { useUser } from "../context/UserContext";
 import { Link, useNavigate } from "react-router-dom";
 import "./css/Header.css";
 
-const DEFAULT_AVATAR =
-  "https://ui-avatars.com/api/?name=User&background=1976d2&color=fff";
+const DEFAULT_AVATAR = "https://ui-avatars.com/api/?name=User&background=1976d2&color=fff";
+const BASE_IMAGE_URL = "http://localhost:8000/storage/";
 
 function Header() {
   const { state, dispatch } = useUser();
   const user = state.user;
   const navigate = useNavigate();
-
+  console.log(user);
   const handleLogout = () => {
-    localStorage.removeItem("user");
-    localStorage.removeItem("token");
     dispatch({ type: "LOGOUT" });
     navigate("/login");
   };
@@ -41,7 +39,7 @@ function Header() {
         {user && (
           <Link to="/profile" className="user-info">
             <img
-              src={user.avatar || DEFAULT_AVATAR}
+              src={BASE_IMAGE_URL + user.avatar || DEFAULT_AVATAR}
               alt="avatar"
               className="user-avatar"
             />

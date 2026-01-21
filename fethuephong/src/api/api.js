@@ -16,3 +16,22 @@ export async function apiFetch(url, options = {}) {
 
   return response;
 }
+
+export async function apiFetchImg(url, options = {}) {
+  const response = await fetch(url, {
+    ...options,
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+      ...options.headers, // ❗ KHÔNG set Content-Type khi dùng FormData
+    },
+  });
+
+  if (response.status === 401) {
+    localStorage.clear();
+    window.location.href = "/login";
+    throw new Error("Unauthorized");
+  }
+
+  return response;
+}
+

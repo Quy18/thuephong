@@ -4,7 +4,7 @@ const UserContext = createContext();
 
 const initialState = {
   user: null,
-  isLoading: true, // 👈 QUAN TRỌNG
+  isLoading: true,
 };
 
 function userReducer(state, action) {
@@ -16,7 +16,17 @@ function userReducer(state, action) {
         isLoading: false,
       };
 
+    case "UPDATE_USER":
+      // 🔥 QUAN TRỌNG
+      localStorage.setItem("user", JSON.stringify(action.payload));
+      return {
+        ...state,
+        user: action.payload,
+      };
+
     case "LOGOUT":
+      localStorage.removeItem("user");
+      localStorage.removeItem("token");
       return {
         ...state,
         user: null,
