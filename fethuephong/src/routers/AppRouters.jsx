@@ -4,6 +4,8 @@ import RegisterPage from "../pages/RegisterPage";
 import HomePage from "../pages/HomePage";
 import ProtectedRoute from "./ProtectedRoute";
 import Chatbot from "../components/Chatbot";
+import RoomDetail from "../pages/RoomDetail";
+import Profile from "../pages/Profile";
 
 export default function AppRoutes() {
   return (
@@ -14,6 +16,11 @@ export default function AppRoutes() {
       {/* Public routes */}
       <Route path="/login" element={<LoginPage />} />
       <Route path="/register" element={<RegisterPage />} />
+      <Route path="/rooms/:id" element={
+        <ProtectedRoute>
+            <RoomDetail />
+          </ProtectedRoute>
+      } />
 
       {/* Route cần đăng nhập */}
       <Route
@@ -22,6 +29,15 @@ export default function AppRoutes() {
           <ProtectedRoute>
             <HomePage />
             <Chatbot />
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/profile"
+        element={
+          <ProtectedRoute>
+            <Profile />
           </ProtectedRoute>
         }
       />

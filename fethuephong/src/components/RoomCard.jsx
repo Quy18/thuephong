@@ -1,4 +1,5 @@
 import "./css/RoomCard.css";
+import { useNavigate } from "react-router-dom";
 
 const STATUS_TEXT = {
   available: "Còn trống",
@@ -8,9 +9,16 @@ const STATUS_TEXT = {
 function RoomCard({ room }) {
   const isRented = room.status === "rented";
   const owner = room.owner;
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    navigate(`/rooms/${room.id}`, {
+      state: { room },
+    });
+  };
 
   return (
-    <div className={`room-card ${isRented ? "disabled" : ""}`}>
+    <div className={`room-card ${isRented ? "disabled" : ""}`} onClick={handleClick}>
       <div className="room-image-wrapper">
         <img
           src={room.image}

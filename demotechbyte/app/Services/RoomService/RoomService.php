@@ -61,7 +61,6 @@ class RoomService
     public function getAllOrFilter(array $filters){
         $query = Room::query()->with('owner'); // lấy thông tin người cho thuê
 
-
         // Status
         if (!empty($filters['status'])) {
             $query->where('status', $filters['status']);
