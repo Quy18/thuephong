@@ -29,7 +29,7 @@ class Room extends Model
         'status',
     ];
 
-    public function owned(){
+    public function owner(){
         return $this->belongsTo(User::class, 'user_id');
     }
 

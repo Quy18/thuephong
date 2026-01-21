@@ -59,6 +59,7 @@ function HomeBody() {
               price: room.price.toLocaleString("vi-VN"),
               address: `${room.district}, ${room.city}`,
               status: room.status,
+              owner: room.owner,
             }}
           />
         ))}

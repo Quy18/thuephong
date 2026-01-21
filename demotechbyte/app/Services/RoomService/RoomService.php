@@ -60,8 +60,12 @@ class RoomService
 
     public function getAll(int $perPage = 12){
         return Room::query()
+            ->with([
+                'owner:id,name,avatar'
+            ])
             ->where('status', '!=', 'processing')
-            ->orderByDesc('price')
+            ->where('status', 'available')
+            ->orderBy('price')
             ->paginate($perPage);
     }
 }

@@ -52,6 +52,38 @@
   background: linear-gradient(135deg, #c62828, #e53935);
 }
 
+/* ===== OWNER BADGE ===== */
+.room-owner-badge {
+  position: absolute;
+  bottom: 12px;
+  left: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 10px;
+  border-radius: 20px;
+  background: rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(6px);
+  color: #fff;
+  max-width: calc(100% - 24px);
+}
+
+.owner-avatar {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #fff;
+}
+
+.owner-name {
+  font-size: 13px;
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 /* ===== INFO ===== */
 .room-info {
   padding: 16px 18px 18px;
@@ -68,7 +100,6 @@
   margin: 0;
   line-height: 1.4;
 
-  /* Giới hạn 2 dòng */
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
