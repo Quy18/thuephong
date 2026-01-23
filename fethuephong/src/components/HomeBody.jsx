@@ -68,6 +68,7 @@ function HomeBody() {
               address: `${room.district}, ${room.city}`,
               status: room.status,
               owner: room.owner,
+              images: room.images,
             }}
           />
         ))}

@@ -37,4 +37,7 @@ class Room extends Model
         return $this->hasMany(Amenity::class);
     }
     
+    public function images(){
+        return $this->hasMany(RoomImage::class);
+    }
 }

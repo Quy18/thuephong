@@ -5,18 +5,21 @@ namespace App\Services\RoomService;
 use Illuminate\Support\Facades\DB;
 use App\Models\Room;
 use App\Models\Amenity;
+use App\Models\RoomImage;
+use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
+use Illuminate\Support\Str;
 
 class RoomService
 {
-    public function create(array $data): array
+    public function create(array $data, Request $request): array
     {
         if(auth('api')->user()->role == 'renter'){
             throw ValidationException::withMessages([
                 'message' => ['Bạn không có quyền đăng phòng trọ.'],
             ]);
         }
-        return DB::transaction(function () use ($data) {
+        return DB::transaction(function () use ($data, $request) {
             // 1. Tạo room
             $room = Room::create([
                 'user_id' => auth('api')->user()->id,
@@ -51,6 +54,26 @@ class RoomService
                 Amenity::insert($amenitiesData);
             }
 
+            // 3. Lưu hình ảnh
+            if($request->hasFile('images')){
+                $imagesData = [];
+                foreach($request->file('images') as $image){
+                    $fileNameImg = 'room_'. $room->id . '_' . Str::random(8) . '.' . $image->getClientOriginalExtension();
+                    
+                    // lưu vào storage/app/public/avatars
+                    $path = $image->storeAs('rooms', $fileNameImg, 'public');
+
+                    $imagesData[] = [
+                        'room_id' => $room->id,
+                        'image_path' => $path,
+                        'created_at' => now(),
+                        'updated_at' => now(),
+                    ];
+                }
+
+                RoomImage::insert($imagesData);
+            }
+
             return [
                 'room_id' => $room->id,
                 'title' => $room->title,
@@ -60,7 +83,7 @@ class RoomService
     }
 
     public function getAllOrFilter(array $filters){
-        $query = Room::query()->with('owner'); // lấy thông tin người cho thuê
+        $query = Room::query()->with('owner', 'images'); // lấy thông tin người cho thuê
 
         // Status
         if (!empty($filters['status'])) {

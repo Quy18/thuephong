@@ -55,9 +55,13 @@ class RoomController extends Controller
                 // ❗ không cho trùng amenity_type trong cùng 1 room
                 'amenities.*.amenity_type_id' => 'distinct',
                 'amenities.*.quantity' => 'nullable|integer|min:1',
+
+                // ---------- IMAGES ----------
+                'images' => 'required|array',
+                'images.*' => 'image|mimes:jpg,jpeg,png,webp|max:5120', // 5MB
             ]);
 
-            $result = $this->roomService->create($data);
+            $result = $this->roomService->create($data, $request);
 
             return response()->json($result, 201);
 

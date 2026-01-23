@@ -6,6 +6,8 @@ import ProtectedRoute from "./ProtectedRoute";
 import Chatbot from "../components/Chatbot";
 import RoomDetail from "../pages/RoomDetail";
 import Profile from "../pages/Profile";
+import PrivateOwnerRoute from "./ProtectedOwnerRoute";
+import CreateRoomPage from "../pages/CreateRoomPage";
 
 export default function AppRoutes() {
   return (
@@ -39,6 +41,15 @@ export default function AppRoutes() {
           <ProtectedRoute>
             <Profile />
           </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/create-room"
+        element={
+          <PrivateOwnerRoute>
+            <CreateRoomPage />
+          </PrivateOwnerRoute>
         }
       />
     </Routes>

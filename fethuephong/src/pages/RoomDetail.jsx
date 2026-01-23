@@ -1,11 +1,9 @@
 import { useLocation, useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Header from "../components/Header";
 import "./css/RoomDetail.css";
 
-const RANDOM_IMAGES = Array.from({ length: 6 }).map(
-  (_, i) => `https://picsum.photos/1200/800?random=${i + 20}`
-);
+const BASE_IMAGE_URL = "http://localhost:8000/storage/";
 
 function RoomDetail() {
   const { state } = useLocation();
@@ -17,6 +15,7 @@ function RoomDetail() {
     window.scrollTo({ top: 0, behavior: "instant" });
   }, []);
 
+  // ❌ không có dữ liệu
   if (!state?.room) {
     return (
       <div className="room-detail">
@@ -28,15 +27,38 @@ function RoomDetail() {
 
   const { room } = state;
 
+  /**
+   * ✅ Danh sách ảnh:
+   * - Có ảnh thật → dùng ảnh backend
+   * - Không có → random demo
+   */
+  const images = useMemo(() => {
+    if (room.images && room.images.length > 0) {
+      return room.images.map(
+        (img) => BASE_IMAGE_URL + img.image_path
+      );
+    }
+
+    // fallback random
+    return Array.from({ length: 6 }).map(
+      (_, i) => `https://picsum.photos/1200/800?random=${i + 20}`
+    );
+  }, [room.images]);
+
+  // reset slider khi đổi room
+  useEffect(() => {
+    setCurrentIndex(0);
+  }, [room.id]);
+
   const nextImage = () => {
     setCurrentIndex((prev) =>
-      prev === RANDOM_IMAGES.length - 1 ? 0 : prev + 1
+      prev === images.length - 1 ? 0 : prev + 1
     );
   };
 
   const prevImage = () => {
     setCurrentIndex((prev) =>
-      prev === 0 ? RANDOM_IMAGES.length - 1 : prev - 1
+      prev === 0 ? images.length - 1 : prev - 1
     );
   };
 
@@ -45,7 +67,7 @@ function RoomDetail() {
       <Header />
 
       <div className="room-detail">
-        {/* HEADER */}
+        {/* ================= HEADER ================= */}
         <div className="detail-header">
           <button className="back-inline" onClick={() => navigate(-1)}>
             ← Quay lại
@@ -57,23 +79,31 @@ function RoomDetail() {
           </div>
         </div>
 
-        {/* TOP */}
+        {/* ================= TOP ================= */}
         <div className="detail-top">
           {/* LEFT - IMAGE */}
           <div className="detail-left">
             <div className="image-slider">
               <img
-                src={RANDOM_IMAGES[currentIndex]}
+                src={images[currentIndex]}
                 alt="room"
                 className="main-image"
               />
 
-              <button className="nav-btn left" onClick={prevImage}>‹</button>
-              <button className="nav-btn right" onClick={nextImage}>›</button>
+              {images.length > 1 && (
+                <>
+                  <button className="nav-btn left" onClick={prevImage}>
+                    ‹
+                  </button>
+                  <button className="nav-btn right" onClick={nextImage}>
+                    ›
+                  </button>
 
-              <div className="image-indicator">
-                {currentIndex + 1}/{RANDOM_IMAGES.length}
-              </div>
+                  <div className="image-indicator">
+                    {currentIndex + 1}/{images.length}
+                  </div>
+                </>
+              )}
             </div>
           </div>
 
@@ -82,10 +112,18 @@ function RoomDetail() {
             <div className="detail-info">
               <h2>Thông tin phòng</h2>
               <ul>
-                <li>💰 Giá: <strong>{room.price} ₫ / tháng</strong></li>
+                <li>
+                  💰 Giá:{" "}
+                  <strong>
+                    {room.price?.toLocaleString()} ₫ / tháng
+                  </strong>
+                </li>
                 <li>📄 Hợp đồng: {room.contract_term}</li>
                 <li>🏠 Trạng thái: {room.status}</li>
-                <li>👤 Chủ phòng: {room.owner?.name || "Chưa cập nhật"}</li>
+                <li>
+                  👤 Chủ phòng:{" "}
+                  {room.owner?.name || "Chưa cập nhật"}
+                </li>
               </ul>
             </div>
 
@@ -97,16 +135,13 @@ function RoomDetail() {
           </div>
         </div>
 
-        {/* DESCRIPTION */}
+        {/* ================= DESCRIPTION ================= */}
         <div className="detail-description">
           <h2>Mô tả</h2>
-          <p>
-            Phòng sạch sẽ, rộng rãi, đầy đủ tiện nghi, khu vực an ninh,
-            phù hợp sinh viên và người đi làm.
-          </p>
+          <p>{room.description || "Chưa có mô tả chi tiết."}</p>
         </div>
 
-        {/* REVIEWS */}
+        {/* ================= REVIEWS ================= */}
         <div className="reviews">
           <h2>Đánh giá</h2>
 

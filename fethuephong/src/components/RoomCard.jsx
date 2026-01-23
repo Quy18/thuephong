@@ -5,10 +5,11 @@ const STATUS_TEXT = {
   available: "Còn trống",
   rented: "Đã thuê",
 };
-
+const BASE_IMAGE_URL = "http://localhost:8000/storage/";
 function RoomCard({ room }) {
   const isRented = room.status === "rented";
   const owner = room.owner;
+  const images = room.images;
   const navigate = useNavigate();
 
   const handleClick = () => {
@@ -16,12 +17,16 @@ function RoomCard({ room }) {
       state: { room },
     });
   };
-
+  console.log(room);
   return (
     <div className={`room-card ${isRented ? "disabled" : ""}`} onClick={handleClick}>
       <div className="room-image-wrapper">
         <img
-          src={room.image}
+          src={
+            images?.[0]?.image_path
+              ? BASE_IMAGE_URL + images[0].image_path
+              : room.image
+          }
           alt={room.address}
           className="room-image"
         />

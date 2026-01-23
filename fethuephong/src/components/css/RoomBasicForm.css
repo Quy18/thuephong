@@ -1,0 +1,39 @@
+.card {
+  background: #fff;
+  border-radius: 14px;
+  padding: 20px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+}
+
+.card h3 {
+  margin-bottom: 16px;
+}
+
+.card input,
+.card textarea,
+.card select {
+  width: 100%;
+  padding: 10px 12px;
+  margin-bottom: 12px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+}
+
+.row-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.upload-box {
+  border: 2px dashed #ddd;
+  padding: 16px;
+  border-radius: 12px;
+  text-align: center;
+}
+
+.image-count {
+  margin-top: 8px;
+  font-size: 14px;
+  color: #555;
+}

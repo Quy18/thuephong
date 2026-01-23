@@ -31,7 +31,7 @@ function Header() {
 
       <div className="header-right">
         {user?.role === "owner" && (
-          <Link to="/post-room" className="post-room">
+          <Link to="/create-room" className="post-room">
             ➕ Đăng phòng
           </Link>
         )}
