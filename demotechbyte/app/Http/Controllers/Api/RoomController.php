@@ -54,6 +54,7 @@ class RoomController extends Controller
 
                 // ❗ không cho trùng amenity_type trong cùng 1 room
                 'amenities.*.amenity_type_id' => 'distinct',
+                'amenities.*.quantity' => 'nullable|integer|min:1',
             ]);
 
             $result = $this->roomService->create($data);

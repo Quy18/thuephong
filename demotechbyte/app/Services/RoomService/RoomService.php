@@ -44,6 +44,7 @@ class RoomService
                         'room_id'          => $room->id,
                         'amenity_type_id'  => $amenity['amenity_type_id'],
                         'custom_name'      => $amenity['custom_name'] ?? null,
+                        'quantity'         => $amenity['quantity'],
                     ];
                 }
 

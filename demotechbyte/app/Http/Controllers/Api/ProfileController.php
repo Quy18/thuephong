@@ -20,7 +20,7 @@ class ProfileController extends Controller
     public function updateProfile(Request $request){
         $data = $request->validate([
             'name' => 'nullable|string|max:255',
-            'phone' => 'nullable|string|max:20',
+            'phone' => 'nullable|string|max:12|unique:users,phone',
 
             'password_old' => 'nullable|string|min:6',
             'password_new' => 'nullable|string|min:6|confirmed',

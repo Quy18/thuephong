@@ -22,7 +22,7 @@ function Profile() {
     avatar: null,
   });
 
-  const [preview, setPreview] = useState(user?.avatar || "");
+  const [preview, setPreview] = useState(BASE_IMAGE_URL + user?.avatar || "");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
@@ -89,7 +89,7 @@ function Profile() {
 
           <div className="profile-header">
             <img
-              src={BASE_IMAGE_URL + preview || DEFAULT_AVATAR}
+              src={ preview || DEFAULT_AVATAR}
               alt="avatar"
               className="profile-avatar"
             />
