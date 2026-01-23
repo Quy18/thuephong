@@ -17,7 +17,6 @@ function RoomCard({ room }) {
       state: { room },
     });
   };
-  console.log(room);
   return (
     <div className={`room-card ${isRented ? "disabled" : ""}`} onClick={handleClick}>
       <div className="room-image-wrapper">

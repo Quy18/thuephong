@@ -2,23 +2,15 @@ import "./css/AmenitySelector.css";
 import { useEffect, useState } from "react";
 import { fetchAmenities } from "../api/amenities";
 
-function AmenitySelector() {
-  const [amenities, setAmenities] = useState({});
-  const [selected, setSelected] = useState({});
+function AmenitySelector({ selected, setSelected }) {
+  const [amenities, setAmenities] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
 
   useEffect(() => {
-    fetchAmenities()
-      .then((data) => {
-        setAmenities(data); // vì backend trả array
-      })
-      .catch((err) => {
-        setError(err.message);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
+    fetchAmenities().then((data) => {
+      setAmenities(data);
+      setLoading(false);
+    });
   }, []);
 
   const toggleAmenity = (id) => {
@@ -33,23 +25,7 @@ function AmenitySelector() {
     );
   };
 
-  if (loading) {
-    return (
-      <div className="card">
-        <h3>Tiện ích</h3>
-        <p>Đang tải tiện ích...</p>
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="card">
-        <h3>Tiện ích</h3>
-        <p className="error-text">{error}</p>
-      </div>
-    );
-  }
+  if (loading) return <div className="card">Đang tải tiện ích...</div>;
 
   return (
     <div className="card">
@@ -58,57 +34,48 @@ function AmenitySelector() {
       <div className="amenity-list">
         {amenities.map((a) => (
           <div key={a.id} className="amenity-row">
-            {/* Checkbox */}
             <input
               type="checkbox"
-              className="amenity-checkbox"
               checked={!!selected[a.id]}
               onChange={() => toggleAmenity(a.id)}
             />
 
-            {/* Name */}
-            <div className="amenity-name">
-              {a.default_name}
-            </div>
+            <span className="amenity-name">{a.default_name}</span>
 
-            {/* Right */}
-            <div className="amenity-right">
-              {selected[a.id] && (
-                <>
+            {selected[a.id] && (
+              <div className="amenity-right">
+                <input
+                  type="number"
+                  min="1"
+                  value={selected[a.id].quantity}
+                  onChange={(e) =>
+                    setSelected({
+                      ...selected,
+                      [a.id]: {
+                        ...selected[a.id],
+                        quantity: Number(e.target.value),
+                      },
+                    })
+                  }
+                />
+
+                {a.id === 16 && (
                   <input
-                    type="number"
-                    min="1"
-                    value={selected[a.id].quantity}
+                    placeholder="Tên tiện ích"
+                    value={selected[a.id].custom_name}
                     onChange={(e) =>
                       setSelected({
                         ...selected,
                         [a.id]: {
                           ...selected[a.id],
-                          quantity: Number(e.target.value),
+                          custom_name: e.target.value,
                         },
                       })
                     }
                   />
-
-                  {a.id === 16 && (
-                    <input
-                      type="text"
-                      placeholder="Tên tiện ích"
-                      value={selected[a.id].custom_name}
-                      onChange={(e) =>
-                        setSelected({
-                          ...selected,
-                          [a.id]: {
-                            ...selected[a.id],
-                            custom_name: e.target.value,
-                          },
-                        })
-                      }
-                    />
-                  )}
-                </>
-              )}
-            </div>
+                )}
+              </div>
+            )}
           </div>
         ))}
       </div>

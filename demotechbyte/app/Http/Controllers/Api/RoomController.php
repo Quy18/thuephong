@@ -102,4 +102,8 @@ class RoomController extends Controller
 
         return response()->json($rooms);
     }
+
+    public function getAllRoomOfOwner(Request $request){
+        return response()->json($this->roomService->getAllRoomOfOwner($request));
+    }
 }

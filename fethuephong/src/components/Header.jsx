@@ -9,7 +9,6 @@ function Header() {
   const { state, dispatch } = useUser();
   const user = state.user;
   const navigate = useNavigate();
-  console.log(user);
   const handleLogout = () => {
     dispatch({ type: "LOGOUT" });
     navigate("/login");

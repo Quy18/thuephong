@@ -138,4 +138,21 @@ class RoomService
          ===============================*/
         return $query->paginate(12);
     }
+
+    public function getAllRoomOfOwner(Request $request)
+    {
+        $rooms = Room::with('images')
+            ->where('user_id', $request->user()->id)
+            ->orderBy('created_at', 'desc')
+            ->paginate(12);
+
+        if ($rooms->isEmpty()) {
+            throw ValidationException::withMessages([
+                'message' => ['Bạn không có phòng trọ nào.'],
+            ]);
+        }
+
+        return $rooms;
+    }
+
 }

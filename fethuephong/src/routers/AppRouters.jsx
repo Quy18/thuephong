@@ -6,8 +6,9 @@ import ProtectedRoute from "./ProtectedRoute";
 import Chatbot from "../components/Chatbot";
 import RoomDetail from "../pages/RoomDetail";
 import Profile from "../pages/Profile";
-import PrivateOwnerRoute from "./ProtectedOwnerRoute";
+import ProtectedOwnerRoute from "./ProtectedOwnerRoute";
 import CreateRoomPage from "../pages/CreateRoomPage";
+import OwnerRoomsPage from "../pages/OwnerRoomsPage";
 
 export default function AppRoutes() {
   return (
@@ -47,9 +48,18 @@ export default function AppRoutes() {
       <Route
         path="/create-room"
         element={
-          <PrivateOwnerRoute>
+          <ProtectedOwnerRoute>
             <CreateRoomPage />
-          </PrivateOwnerRoute>
+          </ProtectedOwnerRoute>
+        }
+      />
+
+      <Route
+        path="/owner-management-room"
+        element={
+          <OwnerRoomsPage>
+            <CreateRoomPage />
+          </OwnerRoomsPage>
         }
       />
     </Routes>

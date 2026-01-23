@@ -36,6 +36,7 @@ Route::middleware('jwt.auth')->group(function () {
     Route::prefix('/room')->group(function () {
         Route::middleware(['owner'])->group(function () {
             Route::post('/create_room', [RoomController::class, 'createRoom']);
+            Route::get('/get_room', [RoomController::class, 'getAllRoomOfOwner']);
         });
         Route::get('/get_all_room', [RoomController::class, 'getAllRoomOrFilter']);
     });

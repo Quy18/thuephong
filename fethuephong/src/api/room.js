@@ -37,3 +37,38 @@ export async function fetchRooms(params = {}) {
   return response.json();
 }
 
+export async function createRoom(formData) {
+  const res = await fetch(`${API_BASE_URL}/create_room`, {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+    },
+    body: formData,
+  });
+
+  const data = await res.json();
+
+  if (!res.ok) {
+    throw data;
+  }
+
+  return data;
+}
+
+export async function fetchMyRooms(page = 1) {
+  const res = await fetch(
+    `${API_BASE_URL}/get_room?page=${page}`,
+    {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    }
+  );
+
+  const data = await res.json();
+
+  if (!res.ok) throw data;
+
+  return data;
+}
+
