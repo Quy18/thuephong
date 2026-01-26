@@ -1,5 +1,6 @@
 import {apiFetch} from './api';
 const API_BASE_URL = "http://localhost:8000/api/room";
+const API_BASE_AI_URL = "http://localhost:8000/api";
 
 export async function fetchRooms(params = {}) {
   const {
@@ -71,4 +72,32 @@ export async function fetchMyRooms(page = 1) {
 
   return data;
 }
+
+/**
+ * AI search rooms
+ * @param {string} keyword
+ * @returns Promise<{data: Array}>
+ */
+export const aiSearchRooms = async (keyword) => {
+  const response = await fetch(`${API_BASE_AI_URL}/ai/search-rooms?keyword=${keyword}`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      // nếu dùng auth
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+    },
+    // body: JSON.stringify({ keyword }),
+  });
+
+  if (!response.ok) {
+    throw new Error("AI search failed");
+  }
+
+  const result = await response.json();
+
+  // chuẩn hoá để SearchPage dùng res.data
+  return {
+    data: result.data || [],
+  };
+};
 

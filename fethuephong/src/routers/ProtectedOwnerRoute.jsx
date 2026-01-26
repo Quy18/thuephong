@@ -1,7 +1,7 @@
 import { Navigate } from "react-router-dom";
 import { useUser } from "../context/UserContext";
 
-function PrivateOwnerRoute({ children }) {
+function ProtectedOwnerRoute({ children }) {
   const { state } = useUser();
   const { user, isLoading } = state;
 
@@ -20,4 +20,4 @@ function PrivateOwnerRoute({ children }) {
   return children;
 }
 
-export default PrivateOwnerRoute;
+export default ProtectedOwnerRoute;

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\Admin\RoomManagementController;
+use App\Http\Controllers\Api\AiSearchController;
 use App\Http\Controllers\Api\AmenityController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\ProfileController;
@@ -55,5 +56,9 @@ Route::middleware('jwt.auth')->group(function () {
         Route::prefix('/room')->group(function () {
             Route::put('/update', [RoomManagementController::class, 'confirmRoom']);
         });
+    });
+
+    Route::prefix('/ai')->group(function () {
+        Route::get('/search-rooms', [AiSearchController::class , 'search']);
     });
 });

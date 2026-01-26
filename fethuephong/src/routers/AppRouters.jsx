@@ -9,6 +9,7 @@ import Profile from "../pages/Profile";
 import ProtectedOwnerRoute from "./ProtectedOwnerRoute";
 import CreateRoomPage from "../pages/CreateRoomPage";
 import OwnerRoomsPage from "../pages/OwnerRoomsPage";
+import SearchPage from "../pages/SearchPage";
 
 export default function AppRoutes() {
   return (
@@ -35,6 +36,8 @@ export default function AppRoutes() {
           </ProtectedRoute>
         }
       />
+      
+      <Route path="/search" element={<SearchPage />} />
 
       <Route
         path="/profile"
@@ -57,9 +60,9 @@ export default function AppRoutes() {
       <Route
         path="/owner-management-room"
         element={
-          <OwnerRoomsPage>
-            <CreateRoomPage />
-          </OwnerRoomsPage>
+          <ProtectedOwnerRoute>
+            <OwnerRoomsPage />
+          </ProtectedOwnerRoute>
         }
       />
     </Routes>

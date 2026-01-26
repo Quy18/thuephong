@@ -20,8 +20,8 @@ function OwnerRoomsPage() {
 
     fetchMyRooms(page)
       .then((res) => {
-        setRooms(res.data);          // 👈 data
-        setLastPage(res.last_page);  // 👈 tổng trang
+        setRooms(res.data);
+        setLastPage(res.last_page);
       })
       .catch((err) => {
         console.error(err);
@@ -40,7 +40,7 @@ function OwnerRoomsPage() {
       <Header />
 
       <div className="owner-room-page">
-        {/* HEADER */}
+        {/* PAGE HEADER */}
         <div className="page-header">
           <div className="left">
             <button className="back-btn" onClick={() => navigate(-1)}>
@@ -51,7 +51,7 @@ function OwnerRoomsPage() {
 
           <button
             className="add-btn"
-            onClick={() => navigate("/owner/rooms/create")}
+            onClick={() => navigate("/create-room")}
           >
             ➕ Thêm phòng
           </button>
