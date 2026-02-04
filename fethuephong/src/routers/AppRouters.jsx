@@ -32,7 +32,7 @@ export default function AppRoutes() {
         element={
           <ProtectedRoute>
             <HomePage />
-            <Chatbot />
+            {/* <Chatbot /> */}
           </ProtectedRoute>
         }
       />

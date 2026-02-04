@@ -1,0 +1,38 @@
+.conversation-list {
+  width: 32%;
+  border-right: 1px solid #eee;
+  overflow-y: auto;
+}
+
+.conversation-item {
+  padding: 10px 12px;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.conversation-item:hover {
+  background: #f5f7fa;
+}
+
+.conversation-item.active {
+  background: #e3f2fd;
+}
+
+.conversation-name {
+  font-weight: 600;
+  font-size: 14px;
+  margin-bottom: 2px;
+}
+
+.conversation-last {
+  font-size: 13px;
+  color: #666;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.unread-dot {
+  color: #e53935;
+  font-size: 10px;
+}

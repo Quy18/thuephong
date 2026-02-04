@@ -10,6 +10,9 @@ use App\Http\Controllers\Api\RoomImageController;
 use Illuminate\Http\Request;
 use Illuminate\Routing\RouteUri;
 use Illuminate\Support\Facades\Route;
+use App\Events\TestEvent;
+use App\Http\Controllers\Api\ConversationController;
+use App\Http\Controllers\Api\MessageController;
 
 /*
 |--------------------------------------------------------------------------
@@ -61,4 +64,10 @@ Route::middleware('jwt.auth')->group(function () {
     Route::prefix('/ai')->group(function () {
         Route::get('/search-rooms', [AiSearchController::class , 'search']);
     });
+
+    Route::get('/conversations', [ConversationController::class, 'index']);
+    Route::post('/conversations', [ConversationController::class, 'store']);
+
+    Route::get('/messages/{conversationId}', [MessageController::class, 'index']);
+    Route::post('/messages', [MessageController::class, 'store']);
 });

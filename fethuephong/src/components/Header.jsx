@@ -2,12 +2,16 @@ import { useUser } from "../context/UserContext";
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import "./css/Header.css";
+import ChatButton from "./Chat/ChatButton";
+import ChatModal from "./Chat/ChatModal";
 
 const DEFAULT_AVATAR =
   "https://ui-avatars.com/api/?name=User&background=1976d2&color=fff";
 const BASE_IMAGE_URL = "http://localhost:8000/storage/";
 
 function Header() {
+  const [openChat, setOpenChat] = useState(false);
+
   const { state, dispatch } = useUser();
   const user = state.user;
   const navigate = useNavigate();
@@ -58,14 +62,18 @@ function Header() {
         {user?.role === "owner" && (
           <>
             <Link to="/create-room" className="post-room">
-              ➕ Đăng phòng
+              ➕ 
             </Link>
             <Link to="/owner-management-room" className="manage-room">
-              🏘️ Quản lý phòng trọ
+              🏘️ 
             </Link>
           </>
         )}
 
+        {user && <ChatButton onClick={() => setOpenChat(true)} />}
+
+        {openChat && <ChatModal onClose={() => setOpenChat(false)} />}
+          
         {user && (
           <Link to="/profile" className="user-info">
             <img

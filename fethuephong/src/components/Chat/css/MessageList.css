@@ -1,0 +1,51 @@
+.message-list {
+  flex: 1;
+  padding: 12px;
+  overflow-y: auto;
+  background: #f9fafb;
+}
+
+/* wrapper để canh trái / phải */
+.message-wrapper {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 8px;
+}
+
+.message-wrapper.me {
+  align-items: flex-end;
+}
+
+.message-wrapper.other {
+  align-items: flex-start;
+}
+
+/* bubble */
+.message-bubble {
+  max-width: 65%;
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-size: 14px;
+  line-height: 1.4;
+  word-wrap: break-word;
+  white-space: pre-wrap;
+}
+
+.message-bubble.me {
+  background: #1976d2;
+  color: #fff;
+  border-bottom-right-radius: 2px;
+}
+
+.message-bubble.other {
+  background: #e0e0e0;
+  color: #000;
+  border-bottom-left-radius: 2px;
+}
+
+/* đã xem / đã gửi */
+.read-status {
+  font-size: 11px;
+  color: #777;
+  margin-top: 2px;
+}
